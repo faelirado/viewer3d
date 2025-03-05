@@ -1,7 +1,6 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
     background-color: rgb(36, 36, 36);
 }
 
@@ -12,6 +11,11 @@ header {
 }
 
 #container3D {
-    width: 400px;
+    width: 300px;
     height: 300px;
+    transform: translateX(-50%);
+    margin-left: 50%;
+    background-color: rgba(255, 255, 255, 0.158);
+    border-radius: 12px;
+    margin-top: 20px;
 }
