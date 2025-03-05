@@ -133,6 +133,8 @@ dragAreaObject.addEventListener("touchstart", startDragObject);
 document.addEventListener("touchmove", draggingObject);
 document.addEventListener("touchend", stopDragObject);
 
+document.querySelector("h1").addEventListener("click", () => {mouseX += 100;});
+
 
 //Start the 3D rendering
 animate();
