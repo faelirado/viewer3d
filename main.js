@@ -113,7 +113,7 @@ function draggingObject(e) {
     }
 }
 
-function stopDragObject() {
+function stopDragObject(e) {
     isDragging = false;
     if (object) {
         lastMouseX = e.clientX;
