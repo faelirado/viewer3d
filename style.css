@@ -1,10 +1,17 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-color: rgb(36, 36, 36);
 }
 
 header {
     background-color: bisque;
     padding: 1px;
     text-align: center;
+}
+
+#container3D {
+    width: 400px;
+    height: 300px;
 }
