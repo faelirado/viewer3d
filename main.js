@@ -101,14 +101,14 @@ let lastMouseY = 0;
 
 function startDragObject(e) {
     isDragging = true;
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
+    lastMouseX = (e.clientX || e.touches[0].clientX);
+    lastMouseY = (e.clientY || e.touches[0].clientY);
 }
 
 function draggingObject(e) {
     if (isDragging && object) {
-        mouseX = e.clientX + lastMouseX * 0.01;
-        mouseY = e.clientY + lastMouseY * 0.01;
+        mouseX = (e.clientX || e.touches[0].clientX) + lastMouseX * 0.01;
+        mouseY = (e.clientY || e.touches[0].clientY) + lastMouseY * 0.01;
 
     }
 }
@@ -116,8 +116,8 @@ function draggingObject(e) {
 function stopDragObject(e) {
     isDragging = false;
     if (object) {
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
+        lastMouseX = (e.clientX || e.touches[0].clientX);
+        lastMouseY = (e.clientY || e.touches[0].clientY);
     }
 }
 
@@ -132,8 +132,6 @@ document.addEventListener("mouseup", stopDragObject);
 dragAreaObject.addEventListener("touchstart", startDragObject);
 document.addEventListener("touchmove", draggingObject);
 document.addEventListener("touchend", stopDragObject);
-
-document.querySelector("h1").addEventListener("touchstart", () => {mouseX += 100;});
 
 
 //Start the 3D rendering
