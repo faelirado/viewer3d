@@ -8,7 +8,7 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 //Create a Three.JS Scene
 const scene = new THREE.Scene();
 //create a new camera with positions and angles
-const camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 //Keep track of the mouse position, so we can make the eye move
 let mouseX = window.innerWidth / 2;
@@ -21,14 +21,19 @@ let object;
 let controls;
 
 //Set which object to render
-let objToRender = 'sports_shoes';
+let objToRender = 'mouse';
+
+// let modelglb = `./models/aaaaa/${objToRender}.glb`;
+let model = `./models/${objToRender}/scene.gltf`;
+
+
 
 //Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 
 //Load the file
 loader.load(
-  `./models/${objToRender}/scene.gltf`,
+  model,
   function (gltf) {
     //If the file is loaded, add it to the scene
     object = gltf.scene;
@@ -52,35 +57,51 @@ renderer.setSize(300, 300);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 //Set how far the camera will be from the 3D model
-camera.position.z = objToRender === "sports_shoes" ? 1 : 500;
+camera.position.z = 0.3;
+camera.position.x = 1;
+camera.position.y = 1;
+
 
 //Add lights to the scene, so we can actually see the 3D model
-const topLight = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
-topLight.position.set(500, 500, 500) //top-left-ish
-topLight.castShadow = true;
-scene.add(topLight);
+const dirLight1 = new THREE.DirectionalLight(0x7E7E7E, 10);
+dirLight1.position.set(1, 8, 1);
+scene.add(dirLight1);
 
-const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "sports_shoes" ? 5 : 1);
+const dirLight2 = new THREE.DirectionalLight(0x7E7E7E, 10);
+dirLight2.position.set(-10, -8, -1);
+scene.add(dirLight2);
+
+
+const ambientLight = new THREE.AmbientLight(0x333333, 25);
 scene.add(ambientLight);
 
 //This adds controls to the camera, so we can rotate / zoom it with the mouse
-if (objToRender === "sports_shoes") {
-  controls = new OrbitControls(camera, renderer.domElement);
-}
+controls = new OrbitControls(camera, renderer.domElement);
 
 //Render the scene
 function animate() {
   requestAnimationFrame(animate);
   //Here we could add some code to update the scene, adding some automatic movement
 
-  //Make the sports_shoes move
-  if (object && objToRender === "sports_shoes") {
+  //Make the mouse move
+  if (object && objToRender === "mouse") {
     //I've played with the constants here until it looked good 
     object.rotation.y = -3 + mouseX / window.innerWidth * 3;
     object.rotation.x = -1.2 + mouseY * 2.5 / window.innerHeight;
   }
+
+  const box = new THREE.Box3().setFromObject(object);
+  const center = box.getCenter(new THREE.Vector3());
+  object.position.sub(center); // Move o modelo para o centro (0,0,0)
+
+  // Atualiza os controles (para movimentar a câmera)
+  controls.update();
+
   renderer.render(scene, camera);
+
 }
+
+
 
 //Add a listener to the window, so we can resize the window and the camera
 window.addEventListener("resize", function () {
@@ -89,7 +110,7 @@ window.addEventListener("resize", function () {
   renderer.setSize(300, 300);
 });
 
-// //add mouse position listener, so we can make the sports_shoes move
+// //add mouse position listener, so we can make the mouse move
 // document.onmousemove = (e) => {
 //   mouseX = e.clientX;
 //   mouseY = e.clientY;
@@ -109,7 +130,6 @@ function draggingObject(e) {
     if (isDragging && object) {
         mouseX = (e.clientX || e.touches[0].clientX) + lastMouseX * 0.01;
         mouseY = (e.clientY || e.touches[0].clientY) + lastMouseY * 0.01;
-
     }
 }
 
